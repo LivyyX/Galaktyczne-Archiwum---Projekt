@@ -16,8 +16,7 @@ int main(){
     Artifact a1={"Alamakota","aa","abab",3,2137,0};
     lista=add(lista,a1);
     find_a(lista,"Alamakota");
-    lista=delete_a(lista,"Alamakota");
-    find_a(lista,"Alamakota");
+    display(lista);
     return 0;
 }
 

@@ -86,8 +86,71 @@ Node* find_a(Node *head,const char *name){
     }
 }
 
-void display(Node *head);
-void freelist(Node *head);
+void display(Node *head){
+    Node *tmp=head;
+    while (tmp!=NULL){
+        printf("Nazwa: %s|Pochodzenie: %s|Cywilizacja: %s|\nPoziom zagrozenia: %d|Rok odkrycia: %d|Status: %s\n",
+            tmp->artifact.name,
+            tmp->artifact.origin,
+            tmp->artifact.creator,
+            tmp->artifact.danger_lvl,
+            tmp->artifact.disc_year,
+            status_to_string(tmp->artifact.status));
 
-Node* sort_by_name(Node *head);
-Node* sort_by_danger(Node *head);
+        tmp=tmp->next;
+    }
+    
+}
+void freelist(Node *head){
+    while (head!=NULL){
+        Node *tmp=head;
+        head=head->next;
+        free(tmp);
+    }
+    
+}
+
+Node* sort_by_name(Node *head){
+    if (head==NULL) return head;
+    int swapped;
+    Node *ptr;
+    Artifact temp;
+
+    do {
+        swapped=0;
+        ptr=head;
+
+        while (ptr->next != NULL){
+            if (strcmp(ptr->artifact.name,ptr->next->artifact.name)>0){
+                temp=ptr->artifact;
+                ptr->artifact=ptr->next->artifact;
+                ptr->next->artifact=temp;
+                swapped=1;
+            }
+            ptr=ptr->next;
+        }
+    }while (swapped);
+    return head;
+}
+Node* sort_by_danger(Node *head){
+        if (head==NULL) return head;
+    int swapped;
+    Node *ptr;
+    Artifact temp;
+
+    do {
+        swapped=0;
+        ptr=head;
+
+        while (ptr->next != NULL){
+            if (ptr->artifact.danger_lvl>ptr->next->artifact.danger_lvl){
+                temp=ptr->artifact;
+                ptr->artifact=ptr->next->artifact;
+                ptr->next->artifact=temp;
+                swapped=1;
+            }
+            ptr=ptr->next;
+        }
+    }while (swapped);
+    return head;
+}

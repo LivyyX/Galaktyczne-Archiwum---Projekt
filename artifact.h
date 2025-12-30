@@ -21,6 +21,7 @@ typedef struct {
     Status status;
 } Artifact;
 
+const char* status_to_string(Status s);
 
 
 #endif
