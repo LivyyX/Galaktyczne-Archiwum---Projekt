@@ -3,7 +3,7 @@
 
 #include "list.h"
 
-void writetofile(Node *head,const char *file_name);
-Node* readfile(const char *file_name);
+void write_to_file(Node *head,const char *file_name);
+Node* load_from_file(const char *file_name);
 
 #endif

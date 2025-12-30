@@ -4,6 +4,10 @@
 #include <string.h>
 
 Node* add(Node *head,Artifact new_a){
+    if(find_a(head,new_a.name)!=NULL){
+        printf("Artefakt o tej nazwie juz istnieje!\n");
+        return head;
+    }
     Node *node = malloc(sizeof(Node));
     if (!node){
         printf("Błąd alokacji pamięci!\n");
@@ -81,6 +85,7 @@ Node* find_a(Node *head,const char *name){
             tmp=tmp->next;
         }
         printf("Nie znaleziono.\n");
+        return NULL;
     }else{
         printf("Lista jest pusta!\n");
     }
