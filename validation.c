@@ -35,7 +35,7 @@ int validate_year(int year){
     return 1;
 }
 int validate_status(int status){
-    if (status<BEZPIECZNY || status>W_TRAKCIE_BADAŃ){
+    if (status<BEZPIECZNY || status>W_TRAKCIE_BADAN){
         printf("Niepoprawny status!\n");
         return 0;
     }

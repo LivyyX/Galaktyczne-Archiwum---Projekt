@@ -98,8 +98,18 @@ void display(Node *head){
 
         tmp=tmp->next;
     }
-    
 }
+
+void display_single(Node *node){
+    printf("\nNazwa: %s\nPochodzenie: %s\nCywilizacja: %s\nPoziom zagrozenia: %d\nRok odkrycia: %d\nStatus: %s\n",
+            node->artifact.name,
+            node->artifact.origin,
+            node->artifact.creator,
+            node->artifact.danger_lvl,
+            node->artifact.disc_year,
+            status_to_string(node->artifact.status));
+}
+    
 void freelist(Node *head){
     while (head!=NULL){
         Node *tmp=head;
@@ -114,7 +124,7 @@ Node* sort_by_name(Node *head){
 
     for (Node *i = head; i->next != NULL; i = i->next) {
         for (Node *j = i->next; j != NULL; j = j->next) {
-            if (strcmp(i->artifact.name, j->artifact.name) > 0) {
+            if (stricmp(i->artifact.name, j->artifact.name) > 0) {
                 Artifact tmp = i->artifact;
                 i->artifact = j->artifact;
                 j->artifact = tmp;
@@ -211,4 +221,34 @@ int edit(Node *head,const char *name){
     printf("Artefakt %s zaktualizowany!\n",name);
     return 1;
 
+}
+
+void find_by_origin_prefix(Node *head,const char *prefix){
+    int found=0;
+
+    while(head!=NULL){
+        if(strncmp(head->artifact.origin,prefix,strlen(prefix))==0){
+            display_single(head);
+            found=1;
+        }
+        head=head->next;
+    }
+    if(!found){
+        printf("Brak artefaktów spelniajacych kryterium!\n");
+    }
+}
+
+void find_by_danger(Node *head,int min_lvl){
+    int found=0;
+
+    while(head!=NULL){
+        if(head->artifact.danger_lvl>=min_lvl){
+            display_single(head);
+            found=1;
+        }
+        head=head->next;
+    }
+    if(!found){
+        printf("Brak artefaktów spelniajacych kryterium!\n");
+    }
 }

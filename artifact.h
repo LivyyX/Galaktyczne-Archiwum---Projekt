@@ -9,7 +9,7 @@ typedef enum{
     NIESTABILNY,
     ZAKAZANY,
     WYMAGA_KWARANTANNY,
-    W_TRAKCIE_BADAŃ,
+    W_TRAKCIE_BADAN,
 }Status;
 
 typedef struct {

@@ -6,7 +6,7 @@ const char* status_to_string(Status s){
         case NIESTABILNY: return "NIESTABILNY";
         case ZAKAZANY: return "ZAKAZANY";
         case WYMAGA_KWARANTANNY: return "WYMAGA KWARANTANNY";
-        case W_TRAKCIE_BADAŃ: return "W TRAKCIE BADAŃ";
+        case W_TRAKCIE_BADAN: return "W TRAKCIE BADAN";
         default: return "NIEZNANY";
     }
 }

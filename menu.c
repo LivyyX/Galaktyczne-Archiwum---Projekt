@@ -10,11 +10,12 @@ void print_menu(){
     printf("2. Dodaj artefakt\n");
     printf("3. Usun artefakt\n");
     printf("4. Wyszukaj artefakt\n");
-    printf("5. Sortuj po nazwie\n");
-    printf("6. Sortuj po poziomie zagrozenia\n");
+    printf("5. Sortuj\n");
+    printf("6. Filtruj\n");
     printf("7. Edytuj artefakt\n");
-    printf("0.Zapisz i wyjdź.\n");
-    printf("Wybierz opcję:");
+    printf("8.Zapisz\n");
+    printf("0.Zapisz i wyjdz\n");
+    printf("Wybierz opcje:");
 }
 
 static void menu_add(Node **head){
@@ -73,7 +74,6 @@ static void menu_find(Node *head){
 
 int mainmenu(Node **head){
     int choice;
-
     do {
         print_menu();
         scanf("%d", &choice);
@@ -92,18 +92,76 @@ int mainmenu(Node **head){
         case 4:
             menu_find(*head);
             break;
-        case 5:
-            *head = sort_by_name(*head);
+        case 5:{
+            int ch;
+            printf("\n Sortuj po:\n1. Nazwie\n2.Poziomie zagrozenia\n");
+            printf("Wybierz opcje:");
+            int sc=scanf("%d",&ch);
+            while (sc!=1 || ch<1 || ch>2){
+                printf("Nieprawidlowa wartosc!\n");
+                printf("Wybierz opcje:");
+                while(getchar()!='\n');
+                sc=scanf("%d",&ch);
+            }
+            while(getchar()!='\n');
+            switch (ch){
+            case 1:{
+                *head = sort_by_name(*head);
+                display(*head);
+                break;}
+            case 2:{
+                *head = sort_by_danger(*head);
+                display(*head);
+                break;}
+            }
             break;
-        case 6:
-            *head = sort_by_danger(*head);
+        }
+        case 6:{
+            int ch1;
+            printf("\n Filtruj po:\n1. Nazwie pochodzenia\n2.Minimalnym poziomie zagrozenia\n");
+            printf("Wybierz opcje:");
+            int sc1=scanf("%d",&ch1);
+            while (sc1!=1 || ch1<1 || ch1>2){
+                printf("Nieprawidlowa wartosc!\n");
+                printf("Wybierz opcje:");
+                while(getchar()!='\n');
+                sc1=scanf("%d",&ch1);
+            }
+            while(getchar()!='\n');
+            switch (ch1){
+            case 1:{
+                char prefix[MAX_TXT];
+                printf("Podaj poczatek pochodzenia: ");
+                fgets(prefix, MAX_TXT, stdin);
+                prefix[strcspn(prefix, "\n")] = 0;
+
+                find_by_origin_prefix(*head, prefix);
+
+                break;
+            }
+            case 2:{
+                int lvl;
+                printf("Minimalny poziom zagrozenia: ");
+                scanf("%d", &lvl);
+                getchar();
+
+                find_by_danger(*head, lvl);
+                break;
+            }
+            }
             break;
+            
+        }
         case 7:
             char name[MAX_NAME];
             printf("Podaj nazwe artefaktu do edycji: ");
             fgets(name,MAX_NAME,stdin);
             name[strcspn(name,"\n")]='\0';
             edit(*head,name);
+            break;
+        case 8:
+            write_to_file(*head,"artefakty.txt");
+            printf("Zapisano!\n");
             break;
         case 0:
             write_to_file(*head,"artefakty.txt");
