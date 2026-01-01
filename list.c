@@ -5,7 +5,7 @@
 
 Node* add(Node *head,Artifact new_a){
     if(find_a(head,new_a.name)!=NULL){
-        printf("Artefakt o tej nazwie juz istnieje!\n");
+        printf("Artefakt o nazwie %s juz istnieje!\n",new_a.name);
         return head;
     }
     Node *node = malloc(sizeof(Node));
@@ -74,27 +74,20 @@ Node* delete_a(Node *head, const char *name)
     //     printf("Odmowa wykonania polecenia!\n");
     //     return head;
 
-Node* find_a(Node *head,const char *name){
-    if (head!=NULL){
-        Node *tmp=head;
-        while (tmp!=NULL){
-            if(tmp->artifact.name != NULL && stricmp(tmp->artifact.name,name)==0){
-                printf("Znaleziono!\n");
-                return tmp;
-            }
-            tmp=tmp->next;
+Node* find_a(Node *head, const char *name){
+    while (head != NULL) {
+        if (strcmp(head->artifact.name, name) == 0) {
+            return head;
         }
-        printf("Nie znaleziono.\n");
-        return NULL;
-    }else{
-        printf("Lista jest pusta!\n");
+        head = head->next;
     }
+    return NULL;
 }
 
 void display(Node *head){
     Node *tmp=head;
     while (tmp!=NULL){
-        printf("Nazwa: %s|Pochodzenie: %s|Cywilizacja: %s|\nPoziom zagrozenia: %d|Rok odkrycia: %d|Status: %s\n",
+        printf("\nNazwa: %s\nPochodzenie: %s\nCywilizacja: %s\nPoziom zagrozenia: %d\nRok odkrycia: %d\nStatus: %s\n",
             tmp->artifact.name,
             tmp->artifact.origin,
             tmp->artifact.creator,
@@ -116,46 +109,30 @@ void freelist(Node *head){
 }
 
 Node* sort_by_name(Node *head){
-    if (head==NULL) return head;
-    int swapped;
-    Node *ptr;
-    Artifact temp;
+    if (!head) return head;
 
-    do {
-        swapped=0;
-        ptr=head;
-
-        while (ptr->next != NULL){
-            if (strcmp(ptr->artifact.name,ptr->next->artifact.name)>0){
-                temp=ptr->artifact;
-                ptr->artifact=ptr->next->artifact;
-                ptr->next->artifact=temp;
-                swapped=1;
+    for (Node *i = head; i->next != NULL; i = i->next) {
+        for (Node *j = i->next; j != NULL; j = j->next) {
+            if (strcmp(i->artifact.name, j->artifact.name) > 0) {
+                Artifact tmp = i->artifact;
+                i->artifact = j->artifact;
+                j->artifact = tmp;
             }
-            ptr=ptr->next;
         }
-    }while (swapped);
+    }
     return head;
 }
 Node* sort_by_danger(Node *head){
-        if (head==NULL) return head;
-    int swapped;
-    Node *ptr;
-    Artifact temp;
+    if (!head) return head;
 
-    do {
-        swapped=0;
-        ptr=head;
-
-        while (ptr->next != NULL){
-            if (ptr->artifact.danger_lvl>ptr->next->artifact.danger_lvl){
-                temp=ptr->artifact;
-                ptr->artifact=ptr->next->artifact;
-                ptr->next->artifact=temp;
-                swapped=1;
+    for (Node *i = head; i->next != NULL; i = i->next) {
+        for (Node *j = i->next; j != NULL; j = j->next) {
+            if (i->artifact.danger_lvl > j->artifact.danger_lvl) {
+                Artifact tmp = i->artifact;
+                i->artifact = j->artifact;
+                j->artifact = tmp;
             }
-            ptr=ptr->next;
         }
-    }while (swapped);
+    }
     return head;
 }

@@ -2,7 +2,6 @@
 #define MENU_H
 
 #include "list.h"
-#include <stdio.h>
 
-int mainmenu();
+int mainmenu(Node **head);
 #endif
