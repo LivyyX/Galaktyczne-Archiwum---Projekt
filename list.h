@@ -19,4 +19,6 @@ void freelist(Node *head);
 Node* sort_by_name(Node *head);
 Node* sort_by_danger(Node *head);
 
+int edit(Node *head,const char *name);
+
 #endif

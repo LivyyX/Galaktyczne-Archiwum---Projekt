@@ -1,4 +1,5 @@
 #include "list.h"
+#include "validation.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -135,4 +136,79 @@ Node* sort_by_danger(Node *head){
         }
     }
     return head;
+}
+
+int edit(Node *head,const char *name){
+    Node *node=find_a(head,name);
+    if (!node){
+        printf("Nie znaleziono artefaktu o nazwie %s\n",name);
+        return 0;
+    }
+    Artifact *a=&node->artifact;
+    printf("Edycja artefaktu: %s\n",a->name);
+    printf("Aby anulowac wcisnij Enter\n");
+
+    char buffer[MAX_TXT];
+
+    printf("Nowe pochodzenie [%s]:",a->origin);
+    fgets(buffer,MAX_TXT,stdin);
+    buffer[strcspn(buffer,"\n")]='\0';
+    if (strlen(buffer)>0){
+        strcpy(a->origin,buffer);
+    }
+
+    printf("Nowa cywilizacja [%s]:",a->creator);
+    fgets(buffer,MAX_TXT,stdin);
+    buffer[strcspn(buffer,"\n")]='\0';
+    if (strlen(buffer)>0){
+        strcpy(a->creator,buffer);
+    }
+
+    int lvl;
+    do{
+        printf("Nowy poziom zagrozenia [%d]:",a->danger_lvl);
+        fgets(buffer,MAX_TXT,stdin);
+        
+        if (buffer[0]=='\n'){//brak zmiany
+            break;
+        }
+        lvl=atoi(buffer);
+    }while(!validate_danger(lvl));
+    if (buffer[0]!='\n'){
+        a->danger_lvl=lvl;
+    }
+
+
+    int year;
+    do{
+        printf("Nowy rok odkrycia [%d]:",a->disc_year);
+        fgets(buffer,MAX_TXT,stdin);
+        if(buffer[0]=='\n'){
+            break;
+        }
+        year=atoi(buffer);
+        }while(!validate_year(year));
+        if(buffer[0]!='\n'){
+            a->disc_year=year;
+        }
+
+
+    int st;
+    do{    
+        printf("Nowy status [%d]: ", a->status);
+        printf("0-bezpieczny, 1-niestabilny, 2-zakazany, 3-kwarantanna, 4-badania\n");
+        fgets(buffer, MAX_TXT, stdin);
+        if(buffer[0]=='\n'){
+            break;
+        }
+        st=atoi(buffer);
+        }while(!validate_status(st));
+        if(buffer[0]!='\n'){
+            a->status=st;
+        }
+    
+
+    printf("Artefakt %s zaktualizowany!\n",name);
+    return 1;
+
 }
